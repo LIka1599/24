@@ -1,0 +1,98 @@
+<html data-count="5">
+<head>
+    <title>Banner</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <script>
+        /*js.cookie.js*/
+        !function(e){var n=!1;if("function"==typeof define&&define.amd&&(define(e),n=!0),"object"==typeof exports&&(module.exports=e(),n=!0),!n){var o=window.Cookies,t=window.Cookies=e();t.noConflict=function(){return window.Cookies=o,t}}}(function(){function e(){for(var e=0,n={};e<arguments.length;e++){var o=arguments[e];for(var t in o)n[t]=o[t]}return n}function n(o){function t(n,r,i){var c;if("undefined"!=typeof document){if(arguments.length>1){if("number"==typeof(i=e({path:"/"},t.defaults,i)).expires){var a=new Date;a.setMilliseconds(a.getMilliseconds()+864e5*i.expires),i.expires=a}i.expires=i.expires?i.expires.toUTCString():"";try{c=JSON.stringify(r),/^[\{\[]/.test(c)&&(r=c)}catch(e){}r=o.write?o.write(r,n):encodeURIComponent(String(r)).replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g,decodeURIComponent),n=(n=(n=encodeURIComponent(String(n))).replace(/%(23|24|26|2B|5E|60|7C)/g,decodeURIComponent)).replace(/[\(\)]/g,escape);var f="";for(var s in i)i[s]&&(f+="; "+s,!0!==i[s]&&(f+="="+i[s]));return document.cookie=n+"="+r+f}n||(c={});for(var p=document.cookie?document.cookie.split("; "):[],d=/(%[0-9A-Z]{2})+/g,u=0;u<p.length;u++){var l=p[u].split("="),C=l.slice(1).join("=");'"'===C.charAt(0)&&(C=C.slice(1,-1));try{var g=l[0].replace(d,decodeURIComponent);if(C=o.read?o.read(C,g):o(C,g)||C.replace(d,decodeURIComponent),this.json)try{C=JSON.parse(C)}catch(e){}if(n===g){c=C;break}n||(c[g]=C)}catch(e){}}return c}}return t.set=t,t.get=function(e){return t.call(t,e)},t.getJSON=function(){return t.apply({json:!0},[].slice.call(arguments))},t.defaults={},t.remove=function(n,o){t(n,"",e(o,{expires:-1}))},t.withConverter=n,t}return n(function(){})});
+    </script>
+    <script>
+        var debug = false;
+        log = {
+            debug:function(msg){
+                if(debug){
+                    console.log(msg);
+                }
+            },
+            error:function(msg, err){
+                if(debug){
+                    console.error(msg, err);
+                }
+            }
+        };
+        var init = function() {
+            var bannerItems = document.getElementById('banners').children;
+            var pathname = window.location.pathname;
+            var maxIndex = 5;
+            if (!maxIndex) {
+                return;
+            }
+            var index = parseInt(Cookies.get('bi'));
+            var duration;
+            if (isNaN(index) || index < 0 || index >= maxIndex){
+                index = Math.floor(Math.random()*maxIndex)
+            }
+            var startTime = Date.now();
+            showNextBanner = function(){
+                for(i=0; i<bannerItems.length; i++){
+                    if (i === index){
+                        bannerItems[i].style.display = 'block';
+                    }else{
+                        bannerItems[i].style.display = 'none';
+                    }
+                }
+                duration = parseInt(bannerItems[index].getAttribute('data-duration')) * 1000;
+                if (isNaN(duration)){
+                    duration = 5000;
+                }
+                log.debug('time:'+((Date.now()-startTime)/1000)+', banner:'+index + ", duration:"+duration);
+
+                index = (index+1) % (maxIndex);
+                Cookies.set('bi', index, {path: pathname, expires: 365});
+
+                if(maxIndex > 1){
+                    setTimeout(showNextBanner, duration);
+                }
+            };
+            showNextBanner();
+
+            // init video players
+            var videos = document.getElementsByName('video');
+            var videoOnClickListener = function(e){
+                e.target.play();
+            };
+            for(i=0; i<videos.length; i++){
+                videos[i].onclick = videoOnClickListener;
+            }
+        };
+    </script>
+    <style>
+        body{margin: 0; padding: 0; border: 0; overflow: hidden;}
+        video{object-fit: fill;}
+        #banners{width: 100%; height: 100%;}
+        #banners * {width: 100%; height: 100%;}
+        #banners > div{position: relative;}
+        #banners > div > a {position: fixed; top: 0; left: 0; bottom: 0; right: 0; display: block; width: 100%; height: 100%; z-index: 5; background-image: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');}
+    </style>
+</head>
+<body onload="init();">
+<div id="banners">
+    <div data-duration="5">
+    <a href="https://www.tdbm.mn/mn/" target="_blank"></a>
+    <img src="images/24-tsag-320x240.jpg" style="width: 100%; height: auto">
+                </div><div data-duration="5">
+    <a href="https://ipo.golomtbank.com/" target="_blank"></a>
+    <img src="images/300x240_24tsag.mn.jpg" style="width: 100%; height: auto">
+                </div><div data-duration="5">
+    <a href="https://digital.golomtbank.com/si/index.html?fbclid=IwAR0cFl_q_Wz-tch6lS6oI724Q9cjzu9O8dm_4v01XqhAWIkEiNwCFlr3xQM" target="_blank"></a>
+    <img src="images/24tsag%20380x300%20.jpg" style="width: 100%; height: auto">
+                </div><div data-duration="5">
+    <a href="https://skytel.mn/" target="_blank"></a>
+    <img src="images/1213.jpg" style="width: 100%; height: auto">
+                </div><div data-duration="5">
+    <a href="https://www.esan.mn" target="_blank"></a>
+    <img src="images/baner%20320x240.jpg" style="width: 100%; height: auto">
+                </div></div>
+</body>
+</html>
